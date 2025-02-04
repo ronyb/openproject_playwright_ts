@@ -11,9 +11,8 @@ export default defineConfig({
   },
 
   reporter: [
-    ['list'],
     ['html'],
-    ['junit'],
-    ['json']
+    //['junit'],
+    //['json']
   ],
 });

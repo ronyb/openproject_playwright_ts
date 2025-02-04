@@ -1,5 +1,6 @@
 import { expect, Page } from "@playwright/test";
 import AbstractPage from "./AbstractPage";
+import NewWorkPackagePage from "./NewWorkPackagePage";
 
 export default class ProjectOverviewPage extends AbstractPage {
     
@@ -17,7 +18,8 @@ export default class ProjectOverviewPage extends AbstractPage {
         await expect(this.page.locator(ProjectOverviewPage.plusButton)).toBeVisible();
     }
 
-    async clickAddWorkPackeOfType(workPackageType: string) {
+    async clickAddWorkPackageOfType(workPackageType: string) : Promise<NewWorkPackagePage> {
         await this.page.locator(`a.op-menu--item-action:has-text('${workPackageType}')`).click();
+        return new NewWorkPackagePage(this.page);
     }
 }
