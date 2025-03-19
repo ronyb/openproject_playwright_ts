@@ -1,33 +1,36 @@
-import { expect, Page } from "@playwright/test";
+import { expect, Locator, Page } from "@playwright/test";
 import AbstractPage from "./AbstractPage";
 import HomePage from "./HomePage";
 
 export default class LoginPage extends AbstractPage {
 
-    private static readonly usernameInput = "#username";
-    private static readonly passwordInput = "#password";
-    private static readonly signInButton = ".login-form--footer > [name='login']";
+    private readonly usernameInput: Locator;
+    private readonly passwordInput: Locator;
+    private readonly signInButton: Locator;
 
     constructor(page: Page) {
         super(page);
+        this.usernameInput = page.locator("#username");
+        this.passwordInput = page.locator("#password");
+        this.signInButton = page.locator(".login-form--footer > [name='login']");
     }
     
     async typeUsername(username: string) : Promise<LoginPage> {
-        await this.page.fill(LoginPage.usernameInput, username);
+        await this.usernameInput.fill(username);
         return this;
     }
 
     async typePassword(password: string) : Promise<LoginPage> {
-        await this.page.fill(LoginPage.passwordInput, password);
+        await this.passwordInput.fill(password);
         return this;
     }
 
     async clickSignInButton() : Promise<HomePage> {
-        await this.page.click(LoginPage.signInButton);
-        return new HomePage(this.page);
+        await this.signInButton.click();
+        return HomePage.create(this.page);
     }
 
-    async assertInPage() {
-        await expect(this.page.locator(LoginPage.usernameInput)).toBeVisible();
+    override async assertInPage() {
+        await expect(this.usernameInput).toBeVisible();
     }
 }

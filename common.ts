@@ -6,7 +6,7 @@ import HomePage from './pages/HomePage';
 export async function loginToOpenProject(page: Page) : Promise<HomePage> {
 
     await page.goto(Config.baseUrl);
-    let loginPage = new LoginPage(page);
+    const loginPage = await LoginPage.create(page);
 
     await loginPage.typeUsername(Config.username);
     await loginPage.typePassword(Config.password);

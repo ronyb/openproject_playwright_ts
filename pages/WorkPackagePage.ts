@@ -1,19 +1,20 @@
-import { expect, Page } from "@playwright/test";
+import { expect, Locator, Page } from "@playwright/test";
 import AbstractPage from "./AbstractPage";
 
 export default class WorkPackagePage extends AbstractPage {
     
-    private static readonly workPackageSubject = "[data-field-name='subject']";
+    private readonly workPackageSubject: Locator;
     
     constructor(page: Page) {
         super(page);
+        this.workPackageSubject = page.locator("[data-field-name='subject']");
     }
 
     async getWorkPackageSubject() : Promise<string> {
-        return await this.page.locator(WorkPackagePage.workPackageSubject).innerText();
+        return await this.workPackageSubject.innerText();
     }
 
-    async assertInPage() {
-        expect((await this.getWorkPackageSubject()).length).toBeGreaterThan(1);
+    override async assertInPage() {
+        await expect(this.workPackageSubject).toBeVisible();
     }
 }
